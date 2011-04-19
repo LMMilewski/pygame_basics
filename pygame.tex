@@ -1,0 +1,220 @@
+\documentclass{beamer}
+\usetheme{Warsaw}
+%\usecolortheme{seahorse}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\title{Programowanie gier w PyGame}
+\author{Łukasz Milewski}
+\institute{Uniwersytet Wrocławski}
+\date{\today, Wrocław}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{Intro}
+
+\begin{frame}{Target}
+
+  \begin{block}{Dla kogo jest ten wykład?}
+    \begin{itemize}
+    \item Początkujący programiści
+    \item Osoby chcę tworzyć gry dla zabawy
+    \item Osoby oczekujące 'szybkich' efektów
+    \item Chętni do uczenia się nowych rzeczy
+    \end{itemize}
+  \end{block}
+
+  \begin{alertblock}{Dla kogo to nie jest wykład?}
+    \begin{itemize}
+    \item Nastawieni na komercyjny gamedev
+    \item Zaawansowani programiści
+    \item Osoby chcące tworzyć gry na konsole
+    \end{itemize}
+  \end{alertblock}
+
+\end{frame}
+
+
+\section{Ogólnie o tworzeniu gier}
+\begin{frame}{OOP, DOD, CBP i inne literki}
+  Gra amatorska to nie komercyjne oprogramowanie
+
+  \begin{alertblock}{Czego nie warto robić}
+    \begin{itemize}
+    \item OOP, DOD, CBP, TDD i inne literki
+    \item Clean code
+    \item Pisanie własnego frameworka, enginu, czegokolwiek
+    \item Uogólnianie
+    \end{itemize}
+  \end{alertblock}
+
+  \begin{block}{Co warto robić}
+    \begin{itemize}
+    \item Pisać grę
+    \item Dodawać kolejne featury
+    \item Stosować KISS
+    \item Maksimum efektów przy minimalnym nakładzie pracy
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}{System kontroli wersji}
+  \begin{block}{github}
+    \begin{itemize}
+    \item https://github.com/
+    \item http://help.github.com/create-a-repo/
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{git}
+    \begin{itemize}
+    \item git clone
+    \item git push origin master - za pierwszym razem
+    \item git commit -a -m 'tutaj opis zmian'
+    \item git push
+    \item gitk
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{System kontroli wersji}
+  \begin{block}{git a paraca grupowa}
+    \begin{itemize}
+    \item git remote add NAZWA ADRES
+    \item git fetch NAZWA
+    \item git merge NAZWA/master  (integrator)
+    \item git rebase NAZWA/master (collaborator)
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Motywacja}
+  \begin{itemize}
+  \item Programowanie z kimś jeszcze (jak wybrać taką osobę?)
+  \item Konkursy (np. www.pyweek.org, compo)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Dwie najskuteczniejsze metody nauczenia się progrmowania gier}
+
+  \begin{block}{Pisz gry}
+    Praktyka czyni mistrza. Co więcej - każda, nawet najprostsza,
+    skończona gra daje sporą dawkę motywacji do tworzenia
+    kolejnych. Najwięcej można się nauczyć rozwiązując konkretne
+    problemy z konkretną grą. Uczenie się z tutoriali (lub co gorsze -
+    z książek) jest bardzo nieefektywne.
+  \end{block}
+
+  \begin{block}{Czytaj kod}
+    Na www.pyweek.org oraz www.pygame.org jest bardzo wiele
+    przykładowych gier. Warto wybierać np. te, które wygrywały
+    poprzednie edycje pyweeka i zobaczyć jak są zrobione. Kod
+    zazwyczaj nie jest piękny, obiektowy czy zgodny z inną
+    ideologią. Za to działa, jest skończony, rozwiązuje konkretne
+    problemy i ma więcej featurów niż pozostałe gry w danej edycji.
+  \end{block}
+
+\end{frame}
+
+
+\section{Podstawy języka Python}
+\begin{frame}{Dlaczego warto wybrać Python}
+  \begin{block}
+    \begin{itemize}
+    \item Pygame
+    \item Bardzo łatwy do nauczenia się
+    \item REPL (toplevel)
+    \item Można zrobić kompletną grę w tydzień
+    \item Dużo bibliotek
+    \item Bogata biblioteka standardowa (np. moduł random)
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Wady Pythona}
+  \begin{block}
+    \begin{itemize}
+    \item Wydajność
+    \item Wydajność
+    \item Wydajność
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Python - składnia}
+  \begin{block}{liczby, booleans, słowniki, krotki, if, listy, for, range}
+    Zobacz data\_types.py
+  \end{block}
+
+  \begin{block}{slicing, list comprehensions}
+    Zobacz lists.py
+  \end{block}
+
+  \begin{block}{funkcje, klasy, metody}
+    Zobaczk fun\_class.py
+  \end{block}
+\end{frame}
+
+\begin{frame}{Python - debugging}
+  \begin{block}{Jak wyszukiwać błędy?}
+    \begin{itemize}
+    \item użyj debuggera [restart, p, c, b] (prezentacja)
+    \item print debugging (moduł pprint)
+    \item bisekcja
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Python - moduły}
+  \begin{block}{sys}
+    \begin{itemize}
+    \item import sys
+    \item sys.argv (sound == not "--nosound" in sys.argv)
+    \item sys.argv[0]
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{os}
+    \begin{itemize}
+    \item import os
+    \item base\_path = os.path.abspath(os.path.dirname(sys.argv[0]))
+    \item os.path.* (join, abspath, dirname, isfile)
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+
+\section{Tworzymy grę}
+% const.py
+% config.py
+% Pygame nadaje się tylko do prostych gier 2D (np. tetris, pong,
+% pacman, ...)
+% Proponowana struktura katalogów
+% Pętla główna
+% Time based animation
+% Klasa Game
+% Singletony / zmienne globalne
+% Lista obiektów
+% Processing events (state polling, event driven)
+% Displaying
+% Fonts
+% Sound
+% Music
+% pygame.display.set_caption('Title')
+% pygame.mouse.set_visible(True/False)
+% Sprites (sprite.py)
+% Obrazki
+% Config.py
+% pygame.transform
+% pygame.surface (fill, blit, set_at, get_at)
+% convert_alpha()
+% many files for animation / texture atlas?
+% AABB i kolizje, pixel perfect collisions?
+
+\end{document}
