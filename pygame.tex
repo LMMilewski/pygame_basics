@@ -195,11 +195,57 @@
 
 
 \section{Tworzymy grę}
-% const.py
-% config.py
-% Pygame nadaje się tylko do prostych gier 2D (np. tetris, pong,
-% pacman, ...)
-% Proponowana struktura katalogów
+
+\begin{frame}{Struktura katalogów}
+  \begin{block}{Płaska struktura katalogów}
+    \begin{enumerate}
+    \item font/
+    \item gfx/
+    \item music/
+    \item sounds/
+    \item src/
+    \end{enumerate}
+  \end{block}
+
+  \begin{alertblock}{Pliki źródłowe}
+    Warto trzymać wszystkie pliki źródłowe - np. pliki .xcf, .psd itp.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Ważne pliki}
+  \begin{block}{Źródła}
+    \begin{enumerate}
+    \item const.py
+    \item config.py
+    \item resources.py
+    \item main.py
+    \end{enumerate}
+  \end{block}
+
+  \begin{alertblock}
+    Dobrze jest zrobić te obiekty jako zmienne globalne (słowo
+    kluczowe \alert{global})
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Klasa Game}
+  \begin{block}{Metody}
+    \begin{enumerate}
+    \item def init(self, screen)
+    \item def update(self, dt)
+    \item def display(self, screen)
+    \item def process\_event(self, event)
+    \item def is\_finished(self)
+    \end{enumerate}
+  \end{block}
+
+  \begin{block}{Kontekst}
+    W konstruktorze tworzymy obiekty gry oraz sprite'y. Do obiektów
+    dobrze jest przekazać obiekt Game (self)
+  \end{block}
+\end{frame}
+
+
 % Pętla główna
 % Time based animation
 % Klasa Game
@@ -220,6 +266,7 @@
 % convert_alpha()
 % many files for animation / texture atlas?
 % AABB i kolizje, pixel perfect collisions?
+% from pygame.locals import *
 
 \begin{frame}{Przydatne adresy}
   \begin{block}{Linki}
