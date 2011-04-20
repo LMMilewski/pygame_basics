@@ -109,18 +109,16 @@
   \begin{block}{Pisz gry}
     Praktyka czyni mistrza. Co więcej - każda, nawet najprostsza,
     skończona gra daje sporą dawkę motywacji do tworzenia
-    kolejnych. Najwięcej można się nauczyć rozwiązując konkretne
-    problemy z konkretną grą. Uczenie się z tutoriali (lub co gorsze -
-    z książek) jest bardzo nieefektywne.
+    kolejnych. Uczenie się z tutoriali jest nieefektywne.
   \end{block}
 
   \begin{block}{Czytaj kod}
     Na www.pyweek.org oraz www.pygame.org jest bardzo wiele
-    przykładowych gier. Warto wybierać np. te, które wygrywały
-    poprzednie edycje pyweeka i zobaczyć jak są zrobione. Kod
-    zazwyczaj nie jest piękny, obiektowy czy zgodny z inną
-    ideologią. Za to działa, jest skończony, rozwiązuje konkretne
-    problemy i ma więcej featurów niż pozostałe gry w danej edycji.
+    przykładowych gier. Warto wybierać te, które wygrywały poprzednie
+    edycje pyweeka i zobaczyć jak są zrobione. Kod zazwyczaj nie jest
+    piękny, obiektowy czy zgodny z inną ideologią. Za to działa, jest
+    skończony, rozwiązuje konkretne problemy i ma więcej featurów niż
+    pozostałe gry w danej edycji.
   \end{block}
 
 \end{frame}
@@ -160,7 +158,7 @@
   \end{block}
 
   \begin{block}{funkcje, klasy, metody}
-    Zobaczk fun\_class.py
+    Zobacz fun\_class.py
   \end{block}
 \end{frame}
 
@@ -217,25 +215,26 @@
     \begin{enumerate}
     \item const.py
     \item config.py
+    \item sprite.py
     \item resources.py
     \item main.py
     \end{enumerate}
   \end{block}
 
-  \begin{alertblock}
+  \begin{alertblock}{}
     Dobrze jest zrobić te obiekty jako zmienne globalne (słowo
     kluczowe \alert{global})
   \end{alertblock}
 \end{frame}
 
-\begin{frame}{Klasa Game}
-  \begin{block}{Metody}
+\begin{frame}{Podstawy}
+  \begin{block}{Klasa Game}
     \begin{enumerate}
     \item def init(self, screen)
     \item def update(self, dt)
     \item def display(self, screen)
     \item def process\_event(self, event)
-    \item def is\_finished(self)
+    \item self.is\_finished
     \end{enumerate}
   \end{block}
 
@@ -245,34 +244,177 @@
   \end{block}
 \end{frame}
 
+\begin{frame}[fragile]{Podstawy}
+  \begin{exampleblock}{Pętla główna}
+    \alert{main\_loop.py}
+  \end{exampleblock}
 
-% Pętla główna
-% Time based animation
-% Klasa Game
-% Singletony / zmienne globalne
-% Lista obiektów
-% Processing events (state polling, event driven)
-% Displaying
-% Fonts
-% Sound
-% Music
-% pygame.display.set_caption('Title')
-% pygame.mouse.set_visible(True/False)
-% Sprites (sprite.py)
-% Obrazki
-% Config.py
-% pygame.transform
-% pygame.surface (fill, blit, set_at, get_at)
-% convert_alpha()
-% many files for animation / texture atlas?
-% AABB i kolizje, pixel perfect collisions?
-% from pygame.locals import *
+  \begin{block}{TBA}
+\begin{verbatim}
+  speed = self.current\_speed()
+  px, py = self.position
+  dx, dy = self.direction
+  px, py = px + dx * dt * speed, py + dy * dt * speed
+\end{verbatim}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Ładowanie zasobów}
+  \begin{block}{Zasoby}
+    \begin{itemize}
+    \item pygame.image.load("obrazek.png").convert\_alpha()
+    \item sound = pygame.mixer.Sound("dzwiek.ogg")
+    \item music - jest streaming. nie trzeba niczego ładować
+    \item pygame.font.Font("font.ttf", size)
+    \item \alert{load\_animation.py}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Wykorzystanie zasobów}
+  \begin{block}{Zasoby}
+    \begin{itemize}
+    \item screen.blit(img, position)
+    \item sound.play(loop)
+    \item pygame.mixer.music.load(name), pygame.mixer.music.play(repeat)
+    \item text\_img = font.render(text, 1, color)
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Przetwarzanie wejścia/wyjścia}
+  \begin{block}{}
+    \begin{itemize}
+    \item polling
+    \item zdarzenia \alert{events.py}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Kolizje}
+  \begin{exampleblock}{Kolizje z główną postacią}
+\begin{verbatim}
+  for enemy in self.enemies:
+  if aabb_collision(self.ferris.aabb(), enemy.aabb()):
+  self.die()
+  return
+\end{verbatim}
+  \end{exampleblock}
+
+  \begin{exampleblock}{kolizje - odległość}
+\begin{verbatim}
+  def distance(pos1, pos2):
+  dx = pos1[0] - pos2[0]
+  dy = pos1[1] - pos2[1]
+  return math.sqrt(dx*dx + dy*dy)
+
+  if distance(player, register) < 5:
+  player.pick(register)
+\end{verbatim}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Kolizje}
+  \begin{exampleblock}{kolizje AABB}
+    def aabb\_collision((minx1, miny1, maxx1, maxy1), (minx2, miny2, maxx2, maxy2)):
+      xcollision = (minx1 <= minx2 and minx2 <= maxx1) or (minx2 <= minx1 and minx1 <= maxx2)
+      ycollision = (miny1 <= miny2 and miny2 <= maxy1) or (miny2 <= miny1 and miny1 <= maxy2)
+      return xcollision and ycollision
+  \end{exampleblock}
+
+  \begin{block}{Pixel perfect}
+    Bardzo dokładne kolizje, jednak w Pythonie trudno jest zrealizować
+    z powodu dużego kosztu obliczeniowego. Dlatego odradzam ich
+    stosowanie.
+  \end{block}
+
+\end{frame}
+
+
+\begin{frame}{Kolizje}
+  \begin{block}{Gdzie wykrywać kolizje?}
+      \begin{itemize}
+      \item W klasie Player
+      \item W klasie Game
+      \end{itemize}
+  \end{block}
+\end{frame}
+
+\section{Najważniejsze moduły pygame}
+
+\begin{frame}{pygame.surface}
+  \begin{block}{}
+    \begin{itemize}
+    \item blit
+    \item convert, convert\_alpha
+    \item copy
+    \item set\_at
+    \item get\_at
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{pygame.draw}
+  \begin{block}{}
+    \begin{itemize}
+    \item rect
+    \item polygon
+    \item circle
+    \item ellipse
+    \item arc
+    \item line
+    \item lines
+    \item aaline
+    \item aalines
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{pygame.Rect}
+  \begin{block}{}
+    \begin{itemize}
+    \item copy
+    \item contains
+    \item collidepoint
+    \item colliderect
+    \item collidelist
+    \item collidelistall
+    \item collidedict
+    \item collidedictall
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{pygame.transform}
+  \begin{block}{}
+    \begin{itemize}
+    \item flip
+    \item scale
+    \item rotate
+    \item laplacian
+    \item average\_surfaces
+    \item average\_color
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{inne}
+  \begin{block}{}
+    \begin{itemize}
+    \item pygame.display.set\_caption('Title')
+    \item pygame.mouse.set\_visible(True/False)
+    \item pygame.sprite
+    \item ...
+    \end{itemize}
+  \end{block}
+\end{frame}
 
 \begin{frame}{Przydatne adresy}
   \begin{block}{Linki}
     \begin{itemize}
     \item http://www.python.org/doc/
     \item www.pygame.org
+    \item http://www.pygame.org/docs/ref/
     \item www.pyweek.org
     \item http://github.com
     \item https://github.com/lmmilewski/pygame\_basics
